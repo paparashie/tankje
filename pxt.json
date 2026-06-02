@@ -3,22 +3,11 @@
     "description": "Tankje blokken voor RobotBit",
     "dependencies": {
         "core": "*",
-        "robotbit": "github:kittenbot/pxt-robotbit",
-        "neopixel": "github:microsoft/pxt-neopixel"
+        "robotbit": "github:kittenbot/pxt-robotbit"
     },
     "files": [
         "main.ts",
         "README.md"
-    ],
-    "testFiles": [
-        "test.ts"
-    ],
-    "targetVersions": {
-        "target": "8.0.22",
-        "targetId": "microbit"
-    },
-    "supportedTargets": [
-        "microbit"
     ],
     "preferredEditor": "tsprj"
 }
