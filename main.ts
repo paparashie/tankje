@@ -37,6 +37,7 @@ namespace Tankje {
      */
     //% block="stop"
     //% weight=90
+    //% subcategory="Wielen"
     export function stop(): void {
         robotbit.Servo(robotbit.Servos.S1, 100)
         robotbit.Servo(robotbit.Servos.S2, 100)
@@ -48,6 +49,7 @@ namespace Tankje {
     //% block="vooruit %seconden seconden"
     //% seconden.defl=2
     //% weight=100
+    //% subcategory="Wielen"
     export function vooruit(seconden: number): void {
         robotbit.Servo(robotbit.Servos.S1, 70)
         robotbit.Servo(robotbit.Servos.S2, 130)
@@ -61,6 +63,7 @@ namespace Tankje {
     //% block="achteruit %seconden seconden"
     //% seconden.defl=2
     //% weight=99
+    //% subcategory="Wielen"
     export function achteruit(seconden: number): void {
         robotbit.Servo(robotbit.Servos.S1, 130)
         robotbit.Servo(robotbit.Servos.S2, 70)
@@ -74,6 +77,7 @@ namespace Tankje {
     //% block="draai links %seconden seconden"
     //% seconden.defl=1
     //% weight=98
+    //% subcategory="Wielen"
     export function draaiLinks(seconden: number): void {
         robotbit.Servo(robotbit.Servos.S1, 70)
         robotbit.Servo(robotbit.Servos.S2, 70)
@@ -87,6 +91,7 @@ namespace Tankje {
     //% block="draai rechts %seconden seconden"
     //% seconden.defl=1
     //% weight=97
+    //% subcategory="Wielen"
     export function draaiRechts(seconden: number): void {
         robotbit.Servo(robotbit.Servos.S1, 130)
         robotbit.Servo(robotbit.Servos.S2, 130)
@@ -99,6 +104,7 @@ namespace Tankje {
      */
     //% block="toeter kort"
     //% weight=80
+    //% subcategory="Toeter"
     export function toeterKort(): void {
         pins.analogPitch(440, 200)
         basic.pause(80)
@@ -110,6 +116,7 @@ namespace Tankje {
      */
     //% block="toeter lang"
     //% weight=79
+    //% subcategory="Toeter"
     export function toeterLang(): void {
         pins.analogPitch(523, 160)
         basic.pause(20)
@@ -166,6 +173,7 @@ namespace Tankje {
     //% block="lampjes kleur %kleur"
     //% kleur.defl=TankjeKleur.Blauw
     //% weight=70
+    //% subcategory="Lichtjes"
     export function lampjesAan(kleur: TankjeKleur): void {
         kiesLedKleur(kleur)
         ledAnimatieAan = true
@@ -176,6 +184,7 @@ namespace Tankje {
      */
     //% block="lampjes uit"
     //% weight=69
+    //% subcategory="Lichtjes"
     export function lampjesUit(): void {
         ledAnimatieAan = false
         strip.clear()
@@ -187,6 +196,7 @@ namespace Tankje {
      */
     //% block="Afstand (cm)"
     //% weight=60
+    //% subcategory="Afstand sensor"
     export function afstandCm(): number {
         pins.digitalWritePin(trigPin, 0)
         control.waitMicros(2)
@@ -209,6 +219,7 @@ namespace Tankje {
     //% block="rijd tot obstakel dichterbij dan %afstand cm"
     //% afstand.defl=10
     //% weight=59
+    //% subcategory="Afstand sensor"
     export function rijdTotObstakel(afstand: number): void {
         while (afstandCm() > afstand) {
             vooruitZonderTimer()
