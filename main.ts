@@ -16,18 +16,18 @@ namespace Tankje {
         Geel
     }
 
-    let strip = neopixel.create(DigitalPin.P16, 4, NeoPixelMode.RGB)
+    let strip: neopixel.Strip = null
 
     let basisR = 0
     let basisG = 80
     let basisB = 255
     let ledAnimatieAan = false
+    let ledAnimatieGestart = false
 
-    // Pas deze eventueel later aan als je de ultrasone sensor op andere pinnen zet
     let trigPin = DigitalPin.P1
     let echoPin = DigitalPin.P2
 
-    function vooruitZonderTimer() {
+    function vooruitZonderTimer(): void {
         robotbit.Servo(robotbit.Servos.S1, 70)
         robotbit.Servo(robotbit.Servos.S2, 130)
     }
@@ -160,6 +160,44 @@ namespace Tankje {
         )
     }
 
+    function startLampjesAlsNodig(): void {
+        if (strip == null) {
+            strip = neopixel.create(DigitalPin.P16, 4, NeoPixelMode.RGB)
+        }
+
+        if (ledAnimatieGestart) {
+            return
+        }
+
+        ledAnimatieGestart = true
+
+        control.inBackground(function () {
+            let stap = 0
+
+            while (true) {
+                if (ledAnimatieAan && strip != null) {
+                    for (let i = 0; i < 4; i++) {
+                        let golf = Math.sin((stap + i * 45) / 30)
+                        let helderheid = Math.round(80 + golf * 70)
+
+                        strip.setPixelColor(i, dynamischeTint(
+                            basisR,
+                            basisG,
+                            basisB,
+                            helderheid,
+                            stap + i * 60
+                        ))
+                    }
+
+                    strip.show()
+                    stap += 2
+                }
+
+                basic.pause(60)
+            }
+        })
+    }
+
     /**
      * Zet de lampjes aan in een kleur
      */
@@ -167,6 +205,7 @@ namespace Tankje {
     //% kleur.defl=TankjeKleur.Blauw
     //% weight=70
     export function lampjesAan(kleur: TankjeKleur): void {
+        startLampjesAlsNodig()
         kiesLedKleur(kleur)
         ledAnimatieAan = true
     }
@@ -177,6 +216,7 @@ namespace Tankje {
     //% block="lampjes uit"
     //% weight=69
     export function lampjesUit(): void {
+        startLampjesAlsNodig()
         ledAnimatieAan = false
         strip.clear()
         strip.show()
@@ -217,30 +257,4 @@ namespace Tankje {
 
         stop()
     }
-
-    control.inBackground(function () {
-        let stap = 0
-
-        while (true) {
-            if (ledAnimatieAan) {
-                for (let i = 0; i < 4; i++) {
-                    let golf = Math.sin((stap + i * 45) / 30)
-                    let helderheid = Math.round(80 + golf * 70)
-
-                    strip.setPixelColor(i, dynamischeTint(
-                        basisR,
-                        basisG,
-                        basisB,
-                        helderheid,
-                        stap + i * 60
-                    ))
-                }
-
-                strip.show()
-                stap += 2
-            }
-
-            basic.pause(60)
-        }
-    })
 }
