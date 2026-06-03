@@ -24,8 +24,8 @@ namespace Tankje {
     let ledAnimatieAan = false
     let ledAnimatieGestart = false
 
-    let trigPin = DigitalPin.P1
-    let echoPin = DigitalPin.P2
+    let sonarPin = DigitalPin.P1
+    
 
     function vooruitZonderTimer(): void {
         robotbit.Servo(robotbit.Servos.S1, 70)
@@ -227,26 +227,30 @@ namespace Tankje {
     }
 
     /**
-     * Meet de afstand met de ultrasone sensor
-     */
-    //% block="Afstand (cm)"
-    //% weight=60
-    //% subcategory="Afstand sensor"
-    export function afstandCm(): number {
-        pins.digitalWritePin(trigPin, 0)
-        control.waitMicros(2)
-        pins.digitalWritePin(trigPin, 1)
-        control.waitMicros(10)
-        pins.digitalWritePin(trigPin, 0)
+ * Meet de afstand met de ultrasone sensor
+ */
+//% block="Afstand (cm)"
+//% weight=60
+//% subcategory="Afstand sensor"
+export function afstandCm(): number {
+    pins.setPull(sonarPin, PinPullMode.PullNone)
 
-        let duur = pins.pulseIn(echoPin, PulseValue.High, 25000)
+    pins.digitalWritePin(sonarPin, 0)
+    control.waitMicros(2)
 
-        if (duur == 0) {
-            return 999
-        }
+    pins.digitalWritePin(sonarPin, 1)
+    control.waitMicros(10)
 
-        return Math.idiv(duur, 58)
+    pins.digitalWritePin(sonarPin, 0)
+
+    let duur = pins.pulseIn(sonarPin, PulseValue.High, 50000)
+
+    if (duur == 0) {
+        return 999
     }
+
+    return Math.idiv(duur, 58)
+}
 
     /**
      * Rijdt vooruit tot er een obstakel dichtbij is
